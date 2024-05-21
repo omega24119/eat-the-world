@@ -1,6 +1,7 @@
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
-local Window = OrionLib:MakeWindow({Name = "all univers", HidePremium = false, IntroText = "All universe hub", SaveConfig = true, ConfigFolder = "OrionTest"})
+  local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "all universe hub", HidePremium = false, IntroText = "All universe hub", SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local eggTab = Window:MakeTab({
   Name = "main",
@@ -17,6 +18,7 @@ getgenv().autoegg = false
 getgenv().autothrow = false
 getgenv().autoeat = false
 getgenv().autoupg = false
+getgenv().autosell = false
 
 --functions
 function doegg()
@@ -54,6 +56,13 @@ function doupg()
     game:GetService("ReplicatedStorage").Events.PurchaseEvent:FireServer(unpack(args))
     task.wait(0.1)
        end
+  end
+
+function dosell()
+  while getgenv().autosell == true do
+game:GetService("Players").LocalPlayer.Character.Events.Sell:FireServer()
+    task.wait(0.1)
+    end
   end
 --toggles
 eggTab:AddToggle({
@@ -101,6 +110,16 @@ eggTab:AddToggle({
   end    
 })
 
+eggTab:AddToggle({
+  Name = "auto sell",
+  Default = false,
+  Callback = function(bool)
+    getgenv().autosell = bool
+    if bool then 
+      dosell()
+    end
+  end    
+})
 --buttons
 eggTab:AddButton({
   Name = "Buy low gravity event!",
